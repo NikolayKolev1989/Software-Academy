@@ -57,18 +57,17 @@ public class GamePanel extends JPanel{
 		setBackground(SystemColor.control);
 		this.root = root;
 		
-//		Лист, в който се съхранява историята на играта
+//		List to record the game history
 		historyItems = new DefaultListModel<String>();
 		historyItems.removeAllElements();
 		
-//		Метод за генериране на 4-цифрено число
+//		4-digit number generator
 		randomNumGenerator();
 		
 		enterNumLabel = new JLabel("Въведи 4-цифрено число");
 		enterNumLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		
-/*		Текстово поле за въвеждане на числови стойности
-*		като позволява да се въвеждат само 4 символа
+/*		Text field - only 4 symbols allowed 
 */
 		enterNumTxtField = new JTextField();
 		enterNumTxtField.setColumns(4);
@@ -79,11 +78,10 @@ public class GamePanel extends JPanel{
 					numComparison();
 					enterNumTxtField.setText("");
 				}
-	/*		Въвежда числовите стойности
-	 *		като позволява да се въвеждат до 4 символа
-	 *		Всеки 5-ти символ действа като ENTER BUTTON
-	 *		Проблем е, че брои DELETE и BACKSPACE като
-	 *		натискане на бутони. Не мога да го оправя
+	/*		Text field - only 4 symbols allowed 
+	 *		Every 5-th symbol acts like ENTER BUTTON
+	 *		Problem -  DELETE и BACKSPACE buttons
+	 *		aslo counts
 	 */		
 //				keyStrokeCounter++;
 //				if (keyStrokeCounter > 4) {
@@ -104,12 +102,12 @@ public class GamePanel extends JPanel{
 			}
 		});
 
-//		Бутон за въвеждане на числото от потребителя
+//		Button - enter user guess number
 		enterNumButton = new JButton("Въведи");
 		enterNumButton.setBackground(SystemColor.controlHighlight);
 		enterNumButton.addActionListener(new ActionListener() {
 			@Override
-//			позволява да се въвеждат само 4 символа
+//			Allows only 4 digits
 			public void actionPerformed(ActionEvent e) {
 				if (enterNumTxtField.getText().length() == 4) {
 					numComparison();
@@ -118,11 +116,11 @@ public class GamePanel extends JPanel{
 			}
 		});
 		
-//		Разделяща вертикална линия
+//		Vertical line
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		
-//		Бутон НАЗАД. Връща в Home менюто, като играта може да се продължи по-късно
+//		BACK BUTTON. Return to main menu
 		backButton = new JButton("Назад");
 		backButton.setBackground(SystemColor.controlHighlight);
 		backButton.addActionListener(new ActionListener() {
@@ -132,7 +130,7 @@ public class GamePanel extends JPanel{
 			}
 		});
 		
-//		Бутон РЕСТАРТ. Започва играта наново
+//		RESTART BUTTON. Reset the game
 		restartButton = new JButton("Рестарт");
 		restartButton.setBackground(SystemColor.controlHighlight);
 		restartButton.addActionListener(new ActionListener() {
@@ -142,19 +140,19 @@ public class GamePanel extends JPanel{
 			}
 		});
 		
-//		Скрол на менюто с историята
+//		Game history scrollpane
 		scrollPane = new JScrollPane();		
 		historyLabel = new JLabel("История");
 		historyLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		historyLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scrollPane.setColumnHeaderView(historyLabel);
 		
-//		Менюто вдясно, което показва историята на текущата игра
+//		Game history
 		history = new JList(historyItems);
 		scrollPane.setViewportView(history);
 		
 		
-//		Layout-и
+//		Layouts
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -210,9 +208,9 @@ public class GamePanel extends JPanel{
 	}
 	
 	
-	/*		Сравнява въведения номер с генерирания 
-	*		и извежда броя на биковете и кравите
-	*		При победа връща "YES / NO" прозорец
+	/*		Compare guessed number with the generated one 
+	*		display Bulls and Cows count
+	*		If number is guessed - returns "New game: YES/NO" window
 	*/		
 	public void numComparison() {
 		try {
@@ -233,11 +231,11 @@ public class GamePanel extends JPanel{
 				}
 			}
 			
-//			принтира въведеното число в конзолата и броя на биковете и кравите - ЗА ТЕСТВАНЕ
+//			Prints guessed number and Bulls and Cows count - FOR TESTING PUSPOSES
 			System.out.println("User input -> " + Arrays.toString(enteredNumArr));
 			System.out.println("BullCounter - "+bullCounter + " / cowCounter - " + cowCounter);
 			
-//			Ако биковете са 4 побеждаваш и извежда прозорез
+//			If Bulls count == 4 shows Congrats window
 			if (bullCounter == 4) {
 				String number = "";
 				for (int j = 0; j < enteredNumArr.length; j++) {
@@ -257,9 +255,9 @@ public class GamePanel extends JPanel{
 				System.out.println("bullCounter = 4");
 			}
 			
-/*		Текст, който се създава на всеки ход, приема
-*		резултата от текущия ход и влиза в историята
-*/
+/*		String generated every turn, gets the result from
+ * 		the current turn and "goes to history"
+ */
 			String historyText = "";
 			for (int i = 0; i < enteredNumArr.length; i++) {
 				historyText += enteredNumArr[i];
@@ -275,7 +273,8 @@ public class GamePanel extends JPanel{
 			}
 			historyItems.addElement(historyText);
 
-//			Зануляване на брояча след края на всеки ход
+//			Turns Bulls and Cows counter to zero each turn
+			
 			bullCounter = 0;
 			cowCounter = 0;	
 		} catch (Exception e) {
@@ -284,9 +283,9 @@ public class GamePanel extends JPanel{
 	}
 	
 	
-/*	Генератор на произволно 4-цифрено число,
-*	като проверява дали има повтарящи се цифри
-*	и ако има, генерира ново число
+/*	Random 4-digit number generator
+*	If there are similar digits in the number
+*	the generator will generate new number
 */
 	public void randomNumGenerator() {
 		boolean equalNumCheck = false;
@@ -294,14 +293,16 @@ public class GamePanel extends JPanel{
 		Integer randomNum = random.nextInt(8999)+1000;
 		String randomNumStr = randomNum.toString();
 		numToGuessArr = randomNumStr.toCharArray();
-//		принтира генерираното число в конзолата - ЗА ТЕСТВАНЕ
+//		Prints the generated number on the console - FOR TESTING PURPOSES
 		System.out.println("Gen. number -> " + Arrays.toString(numToGuessArr));
 		do {
 			if (equalNumCheck) {
 				randomNum = random.nextInt(8999)+1000;
 				randomNumStr = randomNum.toString();
 				numToGuessArr = randomNumStr.toCharArray();
-//				принтира новото генерирано число в конзолата - ЗА ТЕСТВАНЕ
+/*				Prints the new generated number on the console
+ * 				if previous number had similar digits - FOR TESTING PURPOSES
+ */
 				System.out.println("New gen. number -> " + Arrays.toString(numToGuessArr));
 			}
 			equalNumCheck=false;
