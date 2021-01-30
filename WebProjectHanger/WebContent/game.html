@@ -6,8 +6,26 @@
 	</head>
 	<body bgcolor="lightblue">
 		<form method="post" action="hanger">
-		<p><label>Познай думата:</label><input type="text" name="charToGuess" id="charToGuess" maxlength="1" placeholder="въведи буква"></p>
-		<p><input type="submit" name="checkButton" value="Check" ></p>
+			<table width="25%">
+				<thead>
+					<tr>
+                   <!-- <th></th>
+						<th colspan="1" align="center"><h2>Hanger</h2></th> -->
+						<th colspan="2" align="right"><h2>Hanger</h2></th>
+				</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td align="right" >Enter character:</td>
+						<td align="center"><input type="text" name="charToGuess" id="charToGuess" maxlength="1" size="5"></td>
+						<td align="left" rowspan="2"><textarea rows="5" cols="22" name="history" placeholder="History" readonly="readonly"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td align="center"><input type="submit" name="checkButton" value="Check" ></td>
+					</tr>
+				</tbody>
+			</table>
 		</form>
 	</body>
 </html>
