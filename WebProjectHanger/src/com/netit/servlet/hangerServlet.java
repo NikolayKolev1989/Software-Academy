@@ -17,15 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public class hangerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private int mistaêeCounter = 0;
+	private int mistaĞºeCounter = 0;
 	private String wordToGuess;
 	private String result[];
 	private String resultToString = "";
 	private boolean isWordGuessed = false;
 	private static String wordList[] = { "hanger", "locomotive", "monkey", "wardrobe", "window", "accumulator",
-			"cathedral", "anatomy", "objective", "chromosome", "container", "equation",
-			"dentist", "discount", "indicator", "puncture", "raincoat", "fingerprint"};
-
+			"cathedral", "anatomy", "objective", "chromosome", "container", "equation", "dentist", "discount",
+			"indicator", "puncture", "raincoat", "fingerprint" };
+	private String usedCharacters = "";
+	private PrintWriter out;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -33,11 +34,11 @@ public class hangerServlet extends HttpServlet {
 	public hangerServlet() {
 		super();
 		Random randomWord = new Random();
-		int wordPos = randomWord.nextInt(wordList.length); // Ãåíåíèğàíå íà ïğîèçâîëåí íîìåğ (ïîçèöèÿ) îò ëèñòà ñ äóìè
+		int wordPos = randomWord.nextInt(wordList.length); // Ğ“ĞµĞ½ĞµĞ½Ğ¸Ñ€Ğ°Ğ½Ğµ Ğ½Ğ° Ğ¿Ñ€Ğ¾Ğ¸Ğ·Ğ²Ğ¾Ğ»ĞµĞ½ Ğ½Ğ¾Ğ¼ĞµÑ€ (Ğ¿Ğ¾Ğ·Ğ¸Ñ†Ğ¸Ñ) Ğ¾Ñ‚ Ğ»Ğ¸ÑÑ‚Ğ° Ñ Ğ´ÑƒĞ¼Ğ¸
 		wordToGuess = wordList[wordPos];
 		System.out.println(wordToGuess);
 
-		result = new String[wordToGuess.length()]; // Ñúçäàâàíå íà ìàñèâ îò * ñ äúëæèíà äóìàòà çà ïîçíàâàíå
+		result = new String[wordToGuess.length()]; // Ğ¡ÑŠĞ·Ğ´Ğ°Ğ²Ğ°Ğ½Ğµ Ğ½Ğ° Ğ¼Ğ°ÑĞ¸Ğ² Ğ¾Ñ‚ * Ñ Ğ´ÑŠĞ»Ğ¶Ğ¸Ğ½Ğ° Ğ´ÑƒĞ¼Ğ°Ñ‚Ğ° Ğ·Ğ° Ğ¿Ğ¾Ğ·Ğ½Ğ°Ğ²Ğ°Ğ½Ğµ
 		for (int i = 0; i < result.length; i++) {
 			result[i] = "*";
 		}
@@ -51,7 +52,7 @@ public class hangerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.getRequestDispatcher("game.html").forward(request, response);
-//		System.out.println(wordToGuess);
+		resultMistakes0();
 
 	}
 
@@ -61,13 +62,13 @@ public class hangerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("game.html").forward(request, response);
+		out = response.getWriter();
+//		request.getRequestDispatcher("game.html").forward(request, response);
 		String entry = request.getParameter("charToGuess");
 		System.out.println(entry);
-		PrintWriter out = response.getWriter();
+		usedCharacters += entry + ", ";
 
-		// Ïğîâåğêà äàëè ñèìâîëà âúâåäåí îò ïîòğåáèòåëÿ ñúùåñòâóâà â äóìàòà
+		// ĞŸÑ€Ğ¾Ğ²ĞµÑ€ĞºĞ° Ğ´Ğ°Ğ»Ğ¸ ÑĞ¸Ğ¼Ğ²Ğ¾Ğ»Ğ° Ğ²ÑŠĞ²ĞµĞ´ĞµĞ½ Ğ¾Ñ‚ Ğ¿Ğ¾Ñ‚Ñ€ĞµĞ±Ğ¸Ñ‚ĞµĞ»Ñ ÑÑŠÑ‰ĞµÑÑ‚Ğ²ÑƒĞ²Ğ° Ğ² Ğ´ÑƒĞ¼Ğ°Ñ‚Ğ°
 		boolean isCharFound = false;
 		for (int i = 0; i < wordToGuess.length(); i++) {
 			if (wordToGuess.charAt(i) == entry.charAt(0)) {
@@ -75,61 +76,400 @@ public class hangerServlet extends HttpServlet {
 				isCharFound = true;
 			}
 		}
-		
-		// Àêî íÿìà íàìåğåíà áóêâà â äóìàòà, óâåëè÷àâà ãğåøêèòå ñ +1
+
+		// ĞĞºĞ¾ Ğ½ÑĞ¼Ğ° Ğ½Ğ°Ğ¼ĞµÑ€ĞµĞ½Ğ° Ğ±ÑƒĞºĞ²Ğ° Ğ² Ğ´ÑƒĞ¼Ğ°Ñ‚Ğ°, ÑƒĞ²ĞµĞ»Ğ¸Ñ‡Ğ°Ğ²Ğ° Ğ³Ñ€ĞµÑˆĞºĞ¸Ñ‚Ğµ Ñ +1
 		if (!isCharFound) {
-			mistaêeCounter++;
+			mistaĞºeCounter++;
 		}
-		
-		// Ïğèíòèğà êàêâî ñå å ğàçêğèëî îò äóìàòà
-		resultToString="";
+
+		// ĞŸÑ€Ğ¸Ğ½Ñ‚Ğ¸Ñ€Ğ° ĞºĞ°ĞºĞ²Ğ¾ ÑĞµ Ğµ Ñ€Ğ°Ğ·ĞºÑ€Ğ¸Ğ»Ğ¾ Ğ¾Ñ‚ Ğ´ÑƒĞ¼Ğ°Ñ‚Ğ°
+		resultToString = "";
 		for (String symbol : result) {
 			resultToString += symbol + " ";
 		}
-		
-		// Ïğîâåğÿâà äàëè ñà ğàçêğèòè âñè÷êè çâåçäè÷êè
+		resultToString = resultToString.toUpperCase();
+
+		// ĞŸÑ€Ğ¾Ğ²ĞµÑ€ÑĞ²Ğ° Ğ´Ğ°Ğ»Ğ¸ ÑĞ° Ñ€Ğ°Ğ·ĞºÑ€Ğ¸Ñ‚Ğ¸ Ğ²ÑĞ¸Ñ‡ĞºĞ¸ Ğ·Ğ²ĞµĞ·Ğ´Ğ¸Ñ‡ĞºĞ¸
 		if (!resultToString.contains("*")) {
 			isWordGuessed = true;
 		} else {
 			System.out.println(resultToString);
 		}
-		System.out.println("Ãğåøêè " + "(" + mistaêeCounter + ")");
-		
-		out.append("<!DOCTYPE html>\r\n"
-				+ "<html>\r\n"
-				+ "	<head>\r\n"
-				+ "	<meta charset=\"UTF-8\">\r\n"
-				+ "	<title>Hanger</title>\r\n"
-				+ "	</head>\r\n"
-				+ "	<body bgcolor=\"lightblue\">\r\n"
-				+ "		<form method=\"post\" action=\"hanger\">\r\n"
-				+ "			<table width=\"25%\">\r\n"
-				+ "				<thead>\r\n"
-				+ "					<tr>\r\n"
-				+ "                  	<th colspan=\"2\" align=\"right\"><h2>Hanger</h2></th>\r\n"
-				+ "				</tr>\r\n"
-				+ "				</thead>\r\n"
-				+ "				<tbody>\r\n"
-				+ "					<tr>\r\n"
-				+ "						<td align=\"right\" >Enter character:</td>\r\n"
-				+ "						<td align=\"center\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>\r\n"
-				+ "						<td align=\"left\" rowspan=\"2\"><textarea rows=\"5\" cols=\"22\" name=\"history\" readonly=\"readonly\"> " + resultToString + "</textarea></td>\r\n"
-				+ "					</tr>\r\n"
-				+ "					<tr>\r\n"
-				+ "						<td></td>\r\n"
-				+ "						<td align=\"center\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>\r\n"
-				+ "					</tr>\r\n"
-				+ "				</tbody>\r\n"
-				+ "			</table>\r\n"
-				+ "		</form>\r\n"
-				+ "	</body>\r\n"
-				+ "</html>");
-		
+		System.out.println("Ğ“Ñ€ĞµÑˆĞºĞ¸ " + "(" + mistaĞºeCounter + ")");
+
+		switch (mistaĞºeCounter) {
+		case 0:
+			resultMistakes0();
+			break;
+		case 1:
+			resultMistakes1();
+			break;
+		case 2:
+			resultMistakes2();
+			break;
+		case 3:
+			resultMistakes3();
+			break;
+		case 4:
+			resultMistakes4();
+			break;
+		case 5:
+			resultMistakes5();
+			break;
+		case 6:
+			resultMistakes6();
+			break;
+		case 7:
+			resultMistakes7();
+			break;
+
+		default:
+			break;
+		}
+
+//		response.getOutputStream().print("<!DOCTYPE html>\r\n"
+//		+ "<html>\r\n"
+//		+ "	<head>\r\n"
+//		+ "	<meta charset=\"UTF-8\">\r\n"
+//		+ "	<title>Hanger</title>\r\n"
+//		+ "	</head>\r\n"
+//		+ "	<body bgcolor=\"lightblue\">\r\n"
+//		+ "		<form method=\"post\" action=\"hanger\">\r\n"
+//		+ "			<table width=\"25%\">\r\n"
+//		+ "				<thead>\r\n"
+//		+ "					<tr>\r\n"
+//		+ "                   <!-- <th></th>\r\n"
+//		+ "						<th colspan=\"1\" align=\"center\"><h2>Hanger</h2></th> -->\r\n"
+//		+ "						<th colspan=\"2\" align=\"right\"><h2>Hanger</h2></th>\r\n"
+//		+ "				</tr>\r\n"
+//		+ "				</thead>\r\n"
+//		+ "				<tbody>\r\n"
+//		+ "					<tr>\r\n"
+//		+ "						<td align=\"right\" >Enter character:</td>\r\n"
+//		+ "						<td align=\"center\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>\r\n"
+//		+ "						<td align=\"left\" rowspan=\"2\"><textarea rows=\"5\" cols=\"22\" name=\"history\" readonly=\"readonly\">" + resultToString + "</textarea></td>\r\n"
+//		+ "					</tr>\r\n"
+//		+ "					<tr>\r\n"
+//		+ "						<td></td>\r\n"
+//		+ "						<td align=\"center\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>\r\n"
+//		+ "					</tr>\r\n"
+//		+ "				</tbody>\r\n"
+//		+ "			</table>\r\n"
+//		+ "		</form>\r\n"
+//		+ "	</body>\r\n"
+//		+ "</html>");
+
+//		response.getOutputStream().flush();
+//		response.getOutputStream().close();
+//		out.flush();
+//		out.close();
+
+//		response.sendRedirect("game.html");
+
+	}
+
+	public void resultMistakes0() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerDefault.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+
+	}
+
+	public void resultMistakes1() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake1.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+	}
+
+	public void resultMistakes2() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake2.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+	}
+
+	public void resultMistakes3() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake3.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+	}
+
+	public void resultMistakes4() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake4.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+	}
+
+	public void resultMistakes5() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake5.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+	}
+
+	public void resultMistakes6() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake6.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
+	}
+
+	public void resultMistakes7() {
+		out.append("<!DOCTYPE html>");
+		out.append("<html>");
+		out.append("<head>");
+		out.append("<meta charset=\"UTF-8\">");
+		out.append("<title>Hanger</title>");
+		out.append("</head>");
+		out.append("<body bgcolor=\"lightblue\">");
+		out.append("<form method=\"post\" action=\"hanger\">");
+		out.append("<table width=\"100%\">");
+		out.append("<thead>");
+		out.append("<tr>");
+		out.append("<th colspan=\"4\" align=\"right\"><h2>Hanger game</h2></th>");
+		out.append("</tr>");
+		out.append("</thead>");
+		out.append("<tbody>");
+		out.append("<tr>");
+		out.append("<td align=\"right\" valign=\"baseline\" colspan=\"2\">Enter character:</td>");
+		out.append("<td align=\"left\" valign=\"baseline\" colspan=\"2\"><input type=\"text\" name=\"charToGuess\" id=\"charToGuess\" maxlength=\"1\" size=\"5\"></td>");
+		out.append("<td><label><b>Mistakes: "+ mistaĞºeCounter +"</b> </label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td></td>");
+		out.append("<td align=\"center\" valign=\"baseline\" colspan=\"2\"><input type=\"submit\" name=\"checkButton\" value=\"Check\" ></td>");
+		out.append("<td></td>");
+		out.append("<td><label><b>Word: "+ resultToString +"</b></label></td>");
+		out.append("</tr>");
+		out.append("<tr>");
+		out.append("<td colspan=\"4\" align=\"center\"><label><b>Used characters: "+ usedCharacters +"</b></label></td>");
+		out.append("<td align=\"left\" rowspan=\"15\"><img src=\"Images/hangerMistake7.png\" alt=\"image not found\"></td>");
+		out.append("</tr>");
+		out.append("</tbody>");
+		out.append("</table>");
+		out.append("</form>");
+		out.append("</body>");
+		out.append("</html>");
 	}
 }
-
-
-
-
-
-
