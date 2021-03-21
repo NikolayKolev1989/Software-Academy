@@ -40,52 +40,52 @@ public class CasesChooser extends HttpServlet {
 		String caseChoose = request.getParameter("case");
 		switch (caseChoose) {
 		case "case1":
-
+			request.getRequestDispatcher("Pages/case1.html").forward(request, response);
 			break;
 		case "case2":
-
+			request.getRequestDispatcher("Pages/case2.html").forward(request, response);
 			break;
 		case "case3":
-
+			request.getRequestDispatcher("Pages/case3.html").forward(request, response);
 			break;
 		case "case4":
-
+			request.getRequestDispatcher("Pages/case4.html").forward(request, response);
 			break;
 		case "case5":
-
+			request.getRequestDispatcher("Pages/case5.html").forward(request, response);
 			break;
 		case "case6":
-
+			request.getRequestDispatcher("Pages/case6.html").forward(request, response);
 			break;
 		case "case7":
-
+			request.getRequestDispatcher("Pages/case7.html").forward(request, response);
 			break;
 		case "case8":
-
+			request.getRequestDispatcher("Pages/case8.html").forward(request, response);
 			break;
 		case "case9":
-
+			request.getRequestDispatcher("Pages/case9.html").forward(request, response);
 			break;
 		case "case10":
-
+			request.getRequestDispatcher("Pages/case10.html").forward(request, response);
 			break;
 		case "case11":
-
+			request.getRequestDispatcher("Pages/case11.html").forward(request, response);
 			break;
 		case "case12":
-
+			request.getRequestDispatcher("Pages/case12.html").forward(request, response);
 			break;
 		case "case13":
-
+			request.getRequestDispatcher("Pages/case13.html").forward(request, response);
 			break;
 		case "case14":
-
+			request.getRequestDispatcher("Pages/case14.html").forward(request, response);
 			break;
 		case "case15":
-
+			request.getRequestDispatcher("Pages/case15.html").forward(request, response);
 			break;
 		case "case16":
-
+			request.getRequestDispatcher("Pages/case16.html").forward(request, response);
 			break;
 		case "case17":
 

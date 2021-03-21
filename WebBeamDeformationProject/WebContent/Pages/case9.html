@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Beam deformation calculator</title>
+		</head>
+	<body bgcolor="white">
+		<h3>Case 9</h3>
+		<form action="cases.html">
+			<input type="submit" name="back" value="Back" id="back">
+		</form>
+		<form method="post" action="">
+			<table border="1">
+				<tbody>
+					<tr>
+						<td><label for="chooseProfile">Choose profile:</label></td>
+					</tr>
+					<tr>
+						<td>
+							<table border="1">
+								<tbody>
+									<tr>
+										<td><label for="reactionA">Reaction force [A]:</label></td>
+										<td><input type="text" name="reaction" value="A=B=P/2" disabled="disabled"> N</td>
+									</tr>
+									<tr>
+										<td><label for="elastic">Elastic modulus [E]:</label></td>
+										<td><input type="text" name="elastic" disabled="disabled">N/m&#xB2;;</td>
+									</tr>
+									<tr>
+										<td><label for="inertia">Moment of inertia [J]:</label></td>
+										<td><input type="text" name="elastic" disabled="disabled">m&#8308;</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+						<td>
+							<table border="1">
+								<tbody>
+									<tr>
+										<td><label for="force">Applied force [P]:</label></td>
+										<td><input type="text" name="reaction" > N</td>
+									</tr>
+									<tr>
+										<td><label for="lenght">Total lenght [L]:</label></td>
+										<td><input type="text" name="lenght" > m</td>
+									</tr>
+									<tr>
+										<td><label for="lenghtx">Lenght [x]:</label></td>
+										<td><input type="text" name="lenghtx" > m</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+						<td>
+							<img src="Images/Cases/case9.png" alt="image not found">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center"><h3>RESULT</h3></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center">
+							<table border="1">
+								<tbody>
+									<tr>
+										<td><label for="deformationP">Deformation at P:</label></td>
+										<td><input type="text" name="deformamtionP" disabled>
+									</tr>
+									<tr>
+										<td><label for="deformationX">Deformation at X:</label></td>
+										<td><input type="text" name="deformamtionX" disabled>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</body>
+</html>
