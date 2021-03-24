@@ -4,6 +4,12 @@
 		<meta charset="UTF-8">
 		<title>Beam deformation calculator</title>
 		<style>
+					
+			.table {
+				display: table;   /* Allow the centering to work */
+				margin: 0 auto;
+			}
+		
 			ul.nav-main li {
 				display: table-cell;
 				list-style-type: none;
@@ -14,45 +20,33 @@
 				border: 1px solid #aaa;
 				margin-top: -1px;
 				background-color: #fff;
-			 
 			}
+			
 			.nav-main li:hover  {
-				
 				background-color: #dde3ee;
-			 
 			}
 			
 		</style>
 		</head>
 	<body bgcolor="white">
 		<header>
+		<h2><a href="cases.html">&#x2190; Cases</a></h2>
 		<h2 align="center">Case 1</h2>
-			<div>
-				<nav>
+				<div class="table">
 					<ul class="nav-main">
-						<li><a href=""><img src="Icons/icon-profile-chs.png" alt="img not found"></a></li>
+						<li><a href="chscases/case1chs.html"><img src="Icons/icon-profile-chs.png" alt="img not found"></a></li>
 						<li><a href=""><img src="Icons/icon-profile-shs.png" alt="img not found"></a></li>
 						<li><a href=""><img src="Icons/icon-profile-rhs.png" alt="img not found"></a></li>
+						<li><a href=""><img src="Icons/icon-profile-h.png" alt="img not found"></a></li>
+						<li><a href=""><img src="Icons/icon-profile-u.png" alt="img not found"></a></li>
+						<li><a href=""><img src="Icons/icon-profile-le.png" alt="img not found"></a></li>
+						<li><a href=""><img src="Icons/icon-profile-lu.png" alt="img not found"></a></li>
 					</ul>
-				</nav>
-			</div>
+				</div>
 		</header>
 		
-		
-		<form action=>
-			<table border="1">
-				<tbody>
-					<tr>
-						<td>Choose profile</td>
-						<td><input type="radio" name="profile"><img src="Images/Profiles/profile-chs.png" alt="picture not fount" width="100" align="bottom"></td>
-						<td><input type="radio" name="profile"><img src="Images/Profiles/profile-rhs.png" alt="picture not fount" width="100" align="bottom"></td>
-						<td><input type="radio" name="profile"><img src="Images/Profiles/profile-shs.png" alt="picture not fount" width="135"align="bottom"></td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
-		
 		<form method="post" action="">
+		<div class="table">
 			<table border="1">
 				<tbody>
 					<tr>
@@ -121,9 +115,7 @@
 					</tr>
 				</tbody>
 			</table>
-		</form>
-		<form action="cases.html">
-			<input type="submit" name="back" value="Back" id="back">
+		</div>
 		</form>
 	</body>
 </html>
