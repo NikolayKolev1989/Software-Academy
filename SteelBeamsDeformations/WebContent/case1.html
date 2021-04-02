@@ -20,12 +20,11 @@
   				text-decoration: none;
 			}
 		
-					
 			.nav {
 				display: table;   /* Allow the centering to work */
 				margin: 0 auto;
 			}
-			.nav li {
+			.nav-main li {
 				position: relative;
 				display: inline-block;
 				list-style-type: none;
@@ -36,22 +35,22 @@
 				margin-top: -1px;
 				background-color: #fff;
 			}
-			.nav li:hover  {
+			.nav-main li:hover  {
 				background-color: #dde3ee;
 			}
 			
 /*links inside dropdown*/
-			.nav-main>li>ul li {
+			.sub-menu li {
 				background: #b3bfd1;
 				color: #606060;
 				font-weight: 700		
 			}
-			.nav-main>li>ul li:hover {
+			.sub-menu li:hover {
 				background: #dde3ee;
 			}
 			
 /*dropdown content*/
-			.nav-main>li>ul {
+			.sub-menu {
 				display: none;
 				position: absolute;
 				width: 100%;
@@ -60,11 +59,10 @@
 				left: 0;
 			}
 
-			.nav-main>li:hover>ul {
+			.nav-main>li:hover .sub-menu {
 				display: table-row;
 			}
 
-			
 		</style>
 	</head>
 <body bgcolor="white">
@@ -74,12 +72,12 @@
 			<div class="nav">
 				<ul class="nav-main">
 					<li><a href="case1chs.html"><img src="profile-icons/icon-profile-chs.png" alt="img not found"></a></li>
-					<li><a href="underconstruction.html"><img src="profile-icons/icon-profile-shs.png" alt="img not found"></a></li>
-					<li><a href="underconstruction.html"><img src="profile-icons/icon-profile-rhs.png" alt="img not found"></a></li>
-					<li><a href="underconstruction.html"><img src="profile-icons/icon-profile-le.png" alt="img not found"></a></li>
-					<li><a href="underconstruction.html"><img src="profile-icons/icon-profile-lu.png" alt="img not found"></a></li>
+					<li><a href="case1shs.html"><img src="profile-icons/icon-profile-shs.png" alt="img not found"></a></li>
+					<li><a href="case1rhs.html"><img src="profile-icons/icon-profile-rhs.png" alt="img not found"></a></li>
+					<li><a href="case1le.html"><img src="profile-icons/icon-profile-le.png" alt="img not found"></a></li>
+					<li><a href="case1lu.html"><img src="profile-icons/icon-profile-lu.png" alt="img not found"></a></li>
 					<li><img src="profile-icons/icon-profile-u.png" alt="img not found">
-						<ul class="sub-menu">
+						<ul class="sub-menu" style="width: 75px !important;">
 							<li><a href="underconstruction.html">UPN</a></li>
 							<li><a href="underconstruction.html">UE</a></li>
 							<li><a href="underconstruction.html">UPE</a></li>
