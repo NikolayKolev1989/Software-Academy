@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS static_tools;
+USE static_tools;
+
+DROP TABLE IF EXISTS uap;
+CREATE TABLE uap(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`type` VARCHAR(255) NOT NULL,
+	sec_in_moment INT NOT NULL -- mm4
+);
+
+
+INSERT IGNORE INTO uap (`type`, sec_in_moment)
+VALUES
+('UAP 80', 1.07E+6),
+('UAP 100', 2.10E+6),
+('UAP 130', 4.60E+6),
+('UAP 150', 7.96E+6),
+('UAP 175', 1.27E+7),
+('UAP 200', 1.95E+7),
+('UAP 220', 2.71E+7),
+('UAP 250', 4.14E+7),
+('UAP 300', 8.17E+7);
+
+SELECT * FROM uap;
